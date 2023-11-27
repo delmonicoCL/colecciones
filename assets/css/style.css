@@ -1,0 +1,10 @@
+.card-container {
+    margin-bottom: 20px;
+}
+
+@media (min-width: 576px) {
+    .card-container {
+        width: calc(33.3333% - 20px);
+        margin-right: 20px;
+    }
+}
