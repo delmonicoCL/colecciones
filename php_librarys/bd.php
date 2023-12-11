@@ -27,7 +27,25 @@ function SelectAlbunes()
 {
 
     $conexion = openBd();
-    $sentenciaText = "select * from albums";
+    $sentenciaText = "SELECT albums.*, artista.Nombre as NombreArtista FROM colecciones.albums
+    join artista
+    On albums.ID_Artista=artista.ID_Artista";
+    $sentencia = $conexion->prepare($sentenciaText);
+    $sentencia->execute();
+    $resultado = $sentencia->fetchALL();
+
+    $conexion = closeBD();
+    return $resultado;
+
+}
+
+
+function SelectCanciones($idAlbum)
+{
+    $conexion = openBd();
+    $sentenciaText = "SELECT * , canciones.Nombre as Cancion from albums join canciones
+    on albums.ID_Albums = canciones.ID_Albums
+    where albums.ID_Albums = " . $idAlbum;
     $sentencia = $conexion->prepare($sentenciaText);
     $sentencia->execute();
     $resultado = $sentencia->fetchALL();

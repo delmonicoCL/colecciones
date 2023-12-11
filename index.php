@@ -1,7 +1,7 @@
 <?php
 
 require_once('./php_librarys/bd.php');
-$albums = SelectAlbunes();
+
 
 ?>
 
@@ -157,7 +157,9 @@ $albums = SelectAlbunes();
             <div class="container">
 
                 <div class="row">
-                    <?php foreach ($albums as $album) { ?>
+<?php  
+    $albums = SelectAlbunes();
+    foreach ($albums as $album) { ?>
                     <div class="col-md-4 mb-4">
                         <div class="card card-container cardEstilo">
                             <img src="<?php echo $album['Imagen']; ?>" class="card-img-top" alt="...">
@@ -170,27 +172,48 @@ $albums = SelectAlbunes();
                                 </p>
                             </div>
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item">ID Artista:
-                                    <?php echo $album['ID_Artista']; ?>
+                                <li class="list-group-item">Artista:
+                                    <?php echo $album['NombreArtista']; ?>
                                 </li>
                                 <li class="list-group-item">ID Album:
                                     <?php echo $album['ID_Albums']; ?>
                                 </li>
+
+                            <?php 
+                             $canciones = SelectCanciones( $album['ID_Albums']);
+                            foreach ($canciones as $resultado) {  ?>
+
+                                 <li class="list-group-item">
+                                    <?php echo $resultado['Cancion']; ?>
+                                </li>
+
+
+                            <?php } ?>                 
+                               
                             </ul>
                             <div class="card-body">
-                                <!-- <button type="button" class="btn btn-primary">Modificar</button>
-                          <button type="button" class="btn btn-secondary">Abrir</button> -->
+                                <button type="button" class="btn btn-warning">Abrir</button>
+                                <button type="button" class="btn btn-success  me-2" data-bs-toggle="modal"data-bs-target="#ModalActualizar"> ACTUALIZAR </button>
+                                <button type="button" class="btn btn-danger" onclick="eliminarAlbum(<?php echo $album['ID_Albums']; ?>)">Borrar</button>
+                                
                             </div>
                         </div>
                     </div>
-                    <?php } ?>
+<?php } ?>
                 </div>
 
 
             </div>
         </div>
 
-       
+        <script>
+    function eliminarAlbum(albumID) {
+        if (confirm('¿Estás seguro de que deseas eliminar este álbum?')) {
+            // Enviar solicitud de eliminación a albumController.php
+            window.location.href = './php_controllers/albumController.php?delete=' + albumID;
+        }
+    }
+        </script>
 
 
 
