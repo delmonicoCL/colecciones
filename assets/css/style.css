@@ -1,10 +1,31 @@
-.card-container {
-    margin-bottom: 20px;
+
+h1 {
+
+    font-family: 'Bebas Neue', sans-serif;
+    color: aliceblue;
+    font-size: 120px;
+
 }
 
-@media (min-width: 576px) {
-    .card-container {
-        width: calc(33.3333% - 20px);
-        margin-right: 20px;
-    }
+.btn {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 25px;
+
+}
+
+.lead {
+    background-color: green;
+    font-size: 25px;
+    color: white;
+
+
+
+}
+
+
+.cardEstilo{
+border-radius: 15px;
+background: white;
+box-shadow:  17px 17px 10px #e3e1e1,
+             -17px -17px 10px #f8f9f5;
 }
