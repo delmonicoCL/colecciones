@@ -55,6 +55,22 @@ function SelectCanciones($idAlbum)
 
 }
 
+function SelectCancionesEstilos($idAlbum)
+{
+    $conexion = openBd();
+    $sentenciaText = "SELECT canciones.Nombre as Cancion, GROUP_CONCAT(estilos.Nombre) as Estilos FROM albums
+    JOIN canciones ON albums.ID_Albums = canciones.ID_Albums
+    JOIN estilos_canciones ON canciones.ID_Canciones = estilos_canciones.ID_Canciones
+    JOIN estilos ON estilos.ID_Estilos = estilos_canciones.ID_Estilos
+    WHERE albums.ID_Albums = " . $idAlbum . "
+    GROUP BY albums.Nombre, canciones.Nombre";
+
+    $sentencia = $conexion->prepare($sentenciaText);
+    $sentencia->execute();
+    $resultado = $sentencia->fetchAll();
+    $conexion = closeBD();
+    return $resultado;
+}
 
 
 function insertAlbum($ID_Albums, $ID_Artista, $Nombre, $Imagen, $Descripcion)

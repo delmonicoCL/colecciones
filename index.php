@@ -10,7 +10,7 @@ require_once('./php_librarys/bd.php');
 <html lang="en" data-bs-theme="auto">
 
 <head>
-    <script src="../assets/js/color-modes.js"></script>
+
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,14 +25,31 @@ require_once('./php_librarys/bd.php');
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
     </script>
-
-
-
     <link rel="stylesheet" href="./assets/css/style.css">
 
+    <!-- <style>
+    .carta-box:hover .carta {
+        transform: rotateY(180deg);
+    }
 
-    </script>
+    .carta {
+        transform-style: preserve-3d;
+        transition: all 0.5s linear;
+    }
 
+    .cara {
+        position: relative;
+        backface-visibility: hidden;
+        width: 100%;
+        height: 100%;
+        display: flex;
+
+    }
+
+    .detras {
+        transform: rotateY(180deg);
+    }
+    </style> -->
 
 </head>
 
@@ -99,30 +116,34 @@ require_once('./php_librarys/bd.php');
                 </div>
             </div>
         </section>
-
+        <!-- Opciones Menu -->
         <div id="menuAjustes">
             <div class="collapse" id="navbarToggleExternalContent">
                 <div class="bg-dark p-4 py-3 mt-4">
                     <h2 class="text-white d-flex justify-content-center">Opciones Albunes</h2>
-                    
-                         <div id="BarraAcciones" class="mt-2 d-flex justify-content-center py-3 bg-dark" style="display: none;">
 
-                            <button type="button" class="btn btn-primary  me-2" data-bs-toggle="modal" data-bs-target="#ModalAgregar">
-                                AGREGAR
-                            </button>
-                            <button type="button" class="btn btn-success  me-2" data-bs-toggle="modal"
-                                data-bs-target="#ModalActualizar"> ACTUALIZAR
-                            </button>
-                            <button type="button" class="btn btn-danger  me-2" data-bs-toggle="modal" data-bs-target="#ModalEliminar">
-                                ELIMINAR
-                            </button>
-                            <button type="button" class="btn btn-light  me-2" data-bs-toggle="modal" data-bs-target="#ModalListar">
-                                LISTAR
-                            </button>
+                    <div id="BarraAcciones" class="mt-2 d-flex justify-content-center py-3 bg-dark"
+                        style="display: none;">
 
-               </div>
+                        <button type="button" class="btn btn-primary  me-2" data-bs-toggle="modal"
+                            data-bs-target="#ModalAgregar">
+                            AGREGAR
+                        </button>
+                        <button type="button" class="btn btn-success  me-2" data-bs-toggle="modal"
+                            data-bs-target="#ModalActualizar"> ACTUALIZAR
+                        </button>
+                        <button type="button" class="btn btn-danger  me-2" data-bs-toggle="modal"
+                            data-bs-target="#ModalEliminar">
+                            ELIMINAR
+                        </button>
+                        <button type="button" class="btn btn-light  me-2" data-bs-toggle="modal"
+                            data-bs-target="#ModalListar">
+                            LISTAR
+                        </button>
+
+                    </div>
+                </div>
             </div>
-        </div>
             <nav class="navbar navbar-dark bg-dark py-3 mt-4  ">
                 <div class="container-fluid d-flex justify-content-center">
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -136,70 +157,109 @@ require_once('./php_librarys/bd.php');
 
         </div>
 
-        <!-- <div id="BarraAcciones" class="mt-2 d-flex justify-content-center py-3 bg-dark" style="display: none;">
-
-            <button type="button" class="btn btn-primary  me-2" data-bs-toggle="modal" data-bs-target="#ModalAgregar">
-                AGREGAR
-            </button>
-            <button type="button" class="btn btn-success  me-2" data-bs-toggle="modal"
-                data-bs-target="#ModalActualizar"> ACTUALIZAR
-            </button>
-            <button type="button" class="btn btn-danger  me-2" data-bs-toggle="modal" data-bs-target="#ModalEliminar">
-                ELIMINAR
-            </button>
-            <button type="button" class="btn btn-light  me-2" data-bs-toggle="modal" data-bs-target="#ModalListar">
-                LISTAR
-            </button>
-
-        </div> -->
-
+        <!-- Contenedor Albunes -->
         <div id="ContenedorAlbum" class="album py-5 bg-body-tertiary">
+
             <div class="container">
-
                 <div class="row">
-<?php  
-    $albums = SelectAlbunes();
-    foreach ($albums as $album) { ?>
-                    <div class="col-md-4 mb-4">
-                        <div class="card card-container cardEstilo">
-                            <img src="<?php echo $album['Imagen']; ?>" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <?php echo $album['Nombre']; ?>
-                                </h5>
-                                <p class="card-text">
-                                    <?php echo $album['Descripcion']; ?>
-                                </p>
+                    <?php
+                    $albums = SelectAlbunes();
+                    foreach ($albums as $album) { ?>
+                    <div class="col-md-4 mb-4 carta-box">
+                        <div class="carta">
+
+                            <div class="frente card card-container cardEstilo">
+                                <img src="<?php echo $album['Imagen']; ?>" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <?php echo $album['Nombre']; ?>
+                                    </h5>
+                                    <p class="card-text">
+                                        <?php echo $album['Descripcion']; ?>
+                                    </p>
+                                </div>
+                                <div class="collapse" id="collapseExample">
+                                    <div class="card card-body">
+                                        <div class="reverso card card-container cardEstilo">
+                                            <div class="card-body">
+                                                <!-- <h4 class="card-title mb-4">
+                                                    <?php echo "Album: " . $album['Nombre'];
+                                                    ?>
+                                                </h4> -->
+                                                <h5>
+                                                    <p>Canciones del Album VERFA</p>
+                                                </h5>
+                                            </div>
+
+                                            <!-- <ul class="list-group list-group-flush">
+
+                                                <?php
+                                                $canciones = SelectCanciones($album['ID_Albums']);
+                                                foreach ($canciones as $resultado) { ?>
+
+                                                <li class="list-group-item">
+
+                                                    <?php echo $resultado['Cancion']; ?>
+                                                </li>
+                                                <?php } ?>
+                                            </ul> -->
+
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Cancion</th>
+                                                        <th>Estilos</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                $canciones = SelectCancionesEstilos($album['ID_Albums']);
+
+                                                    foreach ($canciones as $resultado) {
+                                                    echo "<tr>";
+                                                    echo "<td>{$resultado['Cancion']}</td>";
+                                                    echo "<td>{$resultado['Estilos']}</td>";
+                                                    echo "</tr>";
+                                                }
+                                                ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">Artista:
+                                        <?php echo $album['NombreArtista']; ?>
+                                    </li>
+                                    <li class="list-group-item">ID Album:
+                                        <?php echo $album['ID_Albums']; ?>
+                                    </li>
+                                    <!-- <?php
+                                        $canciones = SelectCanciones($album['ID_Albums']);
+                                        foreach ($canciones as $resultado) { ?>
+                                    <li class="list-group-item">
+                                        <?php echo $resultado['Cancion']; ?>
+                                    </li>
+                                    <?php } ?> -->
+                                </ul>
+
+
+                                <div class="card-body">
+                                    <button type="button" class="btn btn-warning" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseExample" aria-expanded="false"
+                                        aria-controls="collapseExample"> Abrir </button>
+                                    <button type="button" class="btn btn-success  me-2" data-bs-toggle="modal"
+                                        data-bs-target="#ModalActualizar"> ACTUALIZAR </button>
+                                    <button type="button" class="btn btn-danger"
+                                        onclick="eliminarAlbum(<?php echo $album['ID_Albums']; ?>)">Borrar</button>
+
+                                </div>
                             </div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">Artista:
-                                    <?php echo $album['NombreArtista']; ?>
-                                </li>
-                                <li class="list-group-item">ID Album:
-                                    <?php echo $album['ID_Albums']; ?>
-                                </li>
-
-                            <?php 
-                             $canciones = SelectCanciones( $album['ID_Albums']);
-                            foreach ($canciones as $resultado) {  ?>
-
-                                 <li class="list-group-item">
-                                    <?php echo $resultado['Cancion']; ?>
-                                </li>
 
 
-                            <?php } ?>                 
-                               
-                            </ul>
-                            <div class="card-body">
-                                <button type="button" class="btn btn-warning">Abrir</button>
-                                <button type="button" class="btn btn-success  me-2" data-bs-toggle="modal"data-bs-target="#ModalActualizar"> ACTUALIZAR </button>
-                                <button type="button" class="btn btn-danger" onclick="eliminarAlbum(<?php echo $album['ID_Albums']; ?>)">Borrar</button>
-                                
-                            </div>
                         </div>
                     </div>
-<?php } ?>
+                    <?php } ?>
                 </div>
 
 
@@ -207,17 +267,13 @@ require_once('./php_librarys/bd.php');
         </div>
 
         <script>
-    function eliminarAlbum(albumID) {
-        if (confirm('¿Estás seguro de que deseas eliminar este álbum?')) {
-            // Enviar solicitud de eliminación a albumController.php
-            window.location.href = './php_controllers/albumController.php?delete=' + albumID;
+        function eliminarAlbum(albumID) {
+            if (confirm('¿Estás seguro de que deseas eliminar este álbum?')) {
+                // Enviar solicitud de eliminación a albumController.php
+                window.location.href = './php_controllers/albumController.php?delete=' + albumID;
+            }
         }
-    }
         </script>
-
-
-
-
 
         <!-- Modal Eliminar -->
 
@@ -378,7 +434,6 @@ require_once('./php_librarys/bd.php');
                                     echo "<td>{$album['Nombre']}</td>";
                                     echo "<td>{$album['Imagen']}</td>";
                                     echo "<td>{$album['Descripcion']}</td>";
-                                    // Agrega más columnas según sea necesario
                                     echo "</tr>";
                                 }
                                 ?>
