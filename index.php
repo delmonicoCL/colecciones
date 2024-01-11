@@ -187,7 +187,7 @@ require_once('./php_librarys/bd.php');
                                                     ?>
                                                 </h4> -->
                                                 <h5>
-                                                    <p>Canciones del Album VERFA</p>
+                                                    <p>Canciones del Album</p>
                                                 </h5>
                                             </div>
 
