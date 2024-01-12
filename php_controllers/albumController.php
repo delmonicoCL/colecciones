@@ -7,7 +7,7 @@ require_once('../php_librarys/bd.php');
 
 if (isset($_POST['insert'])) {
 
-    insertAlbum($_POST['ID_Albums'], $_POST['ID_Artista'], $_POST['Nombre'], $_POST['Imagen'], $_POST['Descripcion']);
+    insertAlbum( $_POST['ID_Artista'], $_POST['Nombre'], $_FILES['Imagen'], $_POST['Descripcion']);
 
     if (isset($_SESSION['error'])) {
         header('Location: ../index.php');

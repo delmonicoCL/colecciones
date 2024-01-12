@@ -366,16 +366,31 @@ require_once('./php_librarys/bd.php');
                     </div>
                     <div class="modal-body">
                         <form action="./php_controllers/albumController.php" method="POST">
+                           
+                            <div class="form-group">
+                                <!-- <label for="ID_Artista">Artista</label> -->
+                                <!-- <select name="ID_Artista"> 
+                                 <option value="1">Queen</option>   
+                                 <option value="2">Red HOT</option>   
+                                 <option value="3">Paul van Dyk</option>  
+                                 <option value="4">Ramones</option>   
+                                </select>  -->
 
-                            <div class="form-group">
-                                <label for="ID_Albums">ID_Albums</label>
-                                <input type="number" class="form-control" id="ID_Albums" name="ID_Albums"
-                                    placeholder="Identificador" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="ID_Artista">ID_Artista</label>
-                                <input type="number" class="form-control" id="ID_Artista" name="ID_Artista"
-                                    placeholder="Identificador" required>
+                                
+                            <?php $artistas = ListarArtista(); ?>
+                           
+                            
+                            <label for="ID_Artista">Artista</label>
+                            <select name="ID_Artista">
+                            <?php foreach ($artistas as $artista): ?>
+                            <option value="<?php echo $artista['ID_Artista']; ?>"><?php echo $artista['Nombre']; ?></option>
+                            <?php endforeach; ?>
+                            </select>
+
+
+
+
+
                             </div>
                             <div class="form-group">
                                 <label for="Nombre">Nombre Disco</label>
@@ -384,7 +399,7 @@ require_once('./php_librarys/bd.php');
                             </div>
                             <div class="form-group">
                                 <label for="Imagen">Ruta Imagen</label>
-                                <input type="url" class="form-control" id="Imagen" name="Imagen" required>
+                                <input type="file" class="form-control" id="Imagen" name="Imagen" required>
                             </div>
                             <div class="form-group mb-3">
                                 <label for="Descripcion">Descripción</label>

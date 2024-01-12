@@ -33,11 +33,25 @@ function SelectAlbunes()
     $sentencia = $conexion->prepare($sentenciaText);
     $sentencia->execute();
     $resultado = $sentencia->fetchALL();
-
     $conexion = closeBD();
     return $resultado;
 
 }
+
+
+function ListarArtista()
+{
+    $conexion = openBd();
+    $sentenciaText = "SELECT ID_Artista, Nombre FROM artista"; 
+    $sentencia = $conexion->prepare($sentenciaText);
+    $sentencia->execute();
+    $resultado = $sentencia->fetchALL();
+    $conexion = closeBD();
+    return $resultado;
+
+}
+
+
 
 
 function SelectCanciones($idAlbum)
@@ -73,22 +87,26 @@ function SelectCancionesEstilos($idAlbum)
 }
 
 
-function insertAlbum($ID_Albums, $ID_Artista, $Nombre, $Imagen, $Descripcion)
+function insertAlbum($ID_Artista, $Nombre, $Imagen, $Descripcion)
 {
-
     $conexion = openBd();
-    $sentenciaText = "insert into albums (ID_Albums, ID_Artista, Nombre, Imagen, Descripcion) values (:ID_Albums, :ID_Artista, :Nombre, :Imagen, :Descripcion)";
+    $ruta_archivo = "../assets/img/";
+
+    
+    $Imagen ="./img/" . $_FILES['imagen']['name'];
+    $archivo_subido = $ruta_archivo . $_FILES['imagen']['name'];
+    
+    move_uploaded_file($_FILES['imagen']['tmp_name'], $archivo_subido);
+
+
+    $sentenciaText = "insert into albums (ID_Artista, Nombre, Imagen, Descripcion) values ( :ID_Artista, :Nombre, :Imagen, :Descripcion)";
     $sentencia = $conexion->prepare($sentenciaText);
-    $sentencia->bindParam(':ID_Albums', $ID_Albums);
+   
     $sentencia->bindParam(':ID_Artista', $ID_Artista);
     $sentencia->bindParam(':Nombre', $Nombre);
     $sentencia->bindParam(':Imagen', $Imagen);
     $sentencia->bindParam(':Descripcion', $Descripcion);
-
-
-
     $sentencia->execute();
-
     $conexion = closeBd();
 
 
