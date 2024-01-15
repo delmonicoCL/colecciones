@@ -76,6 +76,31 @@ function ListarCanciones()
 
 }
 
+function ListarCancion()
+{
+    $conexion = openBd();
+    $sentenciaText = "SELECT ID_Canciones, ID_Albums, Nombre, Duracion FROM canciones"; 
+    $sentencia = $conexion->prepare($sentenciaText);
+    $sentencia->execute();
+    $resultado = $sentencia->fetchALL();
+    $conexion = closeBD();
+    return $resultado;
+
+}
+
+function ListarEstilosCanciones()
+{
+    $conexion = openBd();
+    $sentenciaText = "SELECT Id_Canciones, Id_Estilos FROM estilos_canciones"; 
+    $sentencia = $conexion->prepare($sentenciaText);
+    $sentencia->execute();
+    $resultado = $sentencia->fetchALL();
+    $conexion = closeBD();
+    return $resultado;
+
+}
+
+
 function SelectCanciones($idAlbum)
 {
     $conexion = openBd();
@@ -107,6 +132,24 @@ function SelectCancionesEstilos($idAlbum)
     $conexion = closeBD();
     return $resultado;
 }
+
+
+function SelectTodasLasCancionesYEstilos() {
+    $conexion = openBd();
+    $sentenciaText = "SELECT albums.Nombre as Album, canciones.Nombre as Cancion, GROUP_CONCAT(estilos.Nombre) as Estilos FROM albums
+    JOIN canciones ON albums.ID_Albums = canciones.ID_Albums
+    JOIN estilos_canciones ON canciones.ID_Canciones = estilos_canciones.ID_Canciones
+    JOIN estilos ON estilos.ID_Estilos = estilos_canciones.ID_Estilos
+    GROUP BY albums.Nombre, canciones.Nombre";
+
+    $sentencia = $conexion->prepare($sentenciaText);
+    $sentencia->execute();
+    $resultado = $sentencia->fetchAll();
+    $conexion = closeBD();
+    return $resultado;
+}
+
+
 
 
 function insertAlbum($ID_Artista, $Nombre, $targetFile, $Descripcion)
@@ -167,13 +210,64 @@ function insertCancion($ID_Albums, $Nombre, $Duracion)
     $conexion = closeBd();
 }
 
+function insertCancionConEstilo($ID_Albums, $Nombre, $Duracion, $Id_Estilos)
+{
+    try{
+        $conexion = openBd();
+        $conexion->beginTransaction();
+        $sentenciaText = "INSERT INTO canciones (ID_Albums, Nombre, Duracion) VALUES (:ID_Albums, :Nombre, :Duracion)";
+    
+        $sentencia = $conexion->prepare($sentenciaText);
+        $sentencia->bindParam(':ID_Albums', $ID_Albums);
+        $sentencia->bindParam(':Nombre', $Nombre);
+        $sentencia->bindParam(':Duracion', $Duracion);
+        $sentencia->execute();
+
+        $idCancion = $conexion->lastInsertId();
+        $sentenciaText = "INSERT INTO estilos_canciones (Id_Canciones, Id_Estilos) VALUES (:Id_Canciones, :Id_Estilos)";
+
+        $sentencia = $conexion->prepare($sentenciaText);
+        $sentencia->bindParam(':Id_Canciones', $idCancion);
+        $sentencia->bindParam(':Id_Estilos', $Id_Estilos);
+        $sentencia->execute();
+        // Cierra la conexión a la base de datos
+      
+        $conexion->commit();
+
+
+      
+    
+    } catch (Exception $e) {
+        $conexion->rollBack();
+        echo "Fallo: " . $e->getMessage();
+    }
+
+    $conexion = closeBd();
+}
+
+
+
+
+
 function insertEstilo($Nombre, $Origen)
 {
     $conexion = openBd();
     $sentenciaText = "INSERT INTO estilos (Nombre, Origen) VALUES (:Nombre, :Origen)";
     $sentencia = $conexion->prepare($sentenciaText);
     $sentencia->bindParam(':Nombre', $Nombre);
-    $sentencia->bindParam(':Duracion', $Origen);
+    $sentencia->bindParam(':Origen', $Origen);
+    $sentencia->execute();
+    // Cierra la conexión a la base de datos
+    $conexion = closeBd();
+}
+
+function insertEstiloCanciones($Nombre)
+{
+    $conexion = openBd();
+    $sentenciaText = "INSERT INTO estilos_canciones (Id_Canciones, Id_Estilos) VALUES (:Id_Canciones, :Id_Estilos)";
+    $sentencia = $conexion->prepare($sentenciaText);
+    $sentencia->bindParam(':Id_Canciones', $Id_Canciones);
+    $sentencia->bindParam(':Id_Estilos', $Id_Estilos);
     $sentencia->execute();
     // Cierra la conexión a la base de datos
     $conexion = closeBd();
@@ -200,6 +294,28 @@ function borrarArtista($ID_Artista)
     $sentencia->execute();
     $conexion = closeBd();
 }
+
+function borrarEstilo($ID_Estilos)
+{
+    $conexion = openBd();
+    $sentenciaText = "DELETE FROM estilos WHERE ID_Estilos = :ID_Estilos";
+    $sentencia = $conexion->prepare($sentenciaText);
+    $sentencia->bindParam(':ID_Estilos', $ID_Estilos);
+    $sentencia->execute();
+    $conexion = closeBd();
+}
+
+function borrarCancion($ID_Canciones)
+{
+    $conexion = openBd();
+    $sentenciaText = "DELETE FROM canciones WHERE ID_Canciones = :ID_Canciones";
+    $sentencia = $conexion->prepare($sentenciaText);
+    $sentencia->bindParam(':ID_Canciones', $ID_Canciones);
+    $sentencia->execute();
+    $conexion = closeBd();
+}
+
+
 
 function actualizarAlbum($ID_Albums, $ID_Artista, $Nombre, $Imagen, $Descripcion)
 {

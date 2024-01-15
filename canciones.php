@@ -134,26 +134,29 @@ require_once('./php_librarys/bd.php');
             <h5 class="display-5 d-flex justify-content-center ">Lista de Canciones</h5>
         </div>
         <div class="listados container d-flex justify-content-center">
-            <table class="table my-5">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Cancion</th>
-                        <th>Album</th>
+        <table class="table my-5">
+        <thead class="table-dark">
+        <tr>
+            <th>Álbum</th>
+            <th>Canción</th>
+            <th>Estilos</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+            // Modifica la consulta SQL para seleccionar todas las canciones y estilos con el nombre del álbum
+            $todasLasCanciones = SelectTodasLasCancionesYEstilos();
 
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $canciones = ListarCanciones();
-                    foreach ($canciones as $cancion) {
-                        echo "<tr>";
-                        echo "<td>{$cancion['Cancion']}</td>";
-                        echo "<td>{$cancion['Album']}</td>";
-                        echo "</tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
+            foreach ($todasLasCanciones as $resultado) {
+                echo "<tr>";
+                echo "<td>{$resultado['Album']}</td>";
+                echo "<td>{$resultado['Cancion']}</td>";
+                echo "<td>{$resultado['Estilos']}</td>";
+                echo "</tr>";
+            }
+        ?>
+    </tbody>
+</table>
 
         </div>
 
@@ -168,20 +171,18 @@ require_once('./php_librarys/bd.php');
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="./php_controllers/listaController.php" method="POST">
-
-                            <div class="form-group">
-
-                                <?php $artistas = ListarArtista(); ?>
-                                <label for="ID_Artista">Artista</label>
-                                <select class="form-select" name="ID_Artista">
-                                    <?php foreach ($artistas as $artista): ?>
-                                        <option value="<?php echo $artista['ID_Artista']; ?>">
-                                            <?php echo $artista['Nombre']; ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
+                        <form action="./php_controllers/cancionController.php" method="POST">
+                                                <div class="form-group">                                                    
+                                                         <?php $canciones = ListarCancion(); ?>
+                                                        <label for="ID_Canciones">Cancion</label>
+                                                        <select class="form-select" name="ID_Canciones">
+                                                            <?php foreach ($canciones as $cancion): ?>
+                                                                <option value="<?php echo $cancion['ID_Canciones']; ?>">
+                                                                    <?php echo $cancion['Nombre']; ?>
+                                                                </option>
+                                                            <?php endforeach; ?>    
+                                                        </select>
+                                                    </div>
 
                             <div class="d-flex justify-content-end mt-2">
                                 <button type="submit" class="btn btn-danger align-items-center"
@@ -207,20 +208,20 @@ require_once('./php_librarys/bd.php');
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="./php_controllers/listaController.php" method="POST">
+                        <form action="./php_controllers/cancionController.php" method="POST">
 
-                            <div class="form-group">
-
-                                <?php $artistas = ListarArtista(); ?>
-                                <label for="ID_Artista">Artista</label>
-                                <select class="form-select" name="ID_Artista">
-                                    <?php foreach ($artistas as $artista): ?>
-                                        <option value="<?php echo $artista['ID_Artista']; ?>">
-                                            <?php echo $artista['Nombre']; ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
+                        <div class="form-group">
+                                                         
+                                                         <?php  $canciones = ListarCancion(); ?>
+                                                        <label for="ID_Canciones">Cancion</label>
+                                                        <select class="form-select" name="ID_Canciones">
+                                                            <?php foreach ($canciones as $cancion): ?>
+                                                                <option value="<?php echo $cancion['ID_Canciones']; ?>">
+                                                                    <?php echo $cancion['Nombre']; ?>
+                                                                </option>
+                                                            <?php endforeach; ?>    
+                                                        </select>
+                                                    </div>
 
                             <div class="form-group">
                                 <label for="Nombre">Nuevo Nombre</label>
@@ -251,9 +252,14 @@ require_once('./php_librarys/bd.php');
                     </div>
                     <div class="modal-body">
                         <form action="./php_controllers/cancionController.php" method="POST" enctype="multipart/form-data">
-                           
-                            <div class="form-group">
-                                                         
+                         
+                        <div class="form-group">
+                            <label for="Nombre">Nombre Cancion</label>
+                            <input type="text" class="form-control" id="Nombre" name="Nombre" placeholder=""
+                                required>
+                        </div>
+
+                       <div class="form-group">                                                         
                             <?php $albumes = SelectAlbunes(); ?>
                             <label for="ID_Albums">Album</label>
                             <select class="form-select" name="ID_Albums">
@@ -264,11 +270,25 @@ require_once('./php_librarys/bd.php');
                                 <?php endforeach; ?>
                             </select>
                         </div>
+
+                        
+                        
+
+
                         <div class="form-group">
-                            <label for="Nombre">Nombre Cancion</label>
-                            <input type="text" class="form-control" id="Nombre" name="Nombre" placeholder=""
-                                required>
-                        </div>
+
+                                <?php $estilos = ListarEstilo(); ?>
+                                <label for="ID_Estilos">Estilo</label>
+                                <select class="form-select" name="ID_Estilos">
+                                    <?php foreach ($estilos as $estilo): ?>
+                                        <option value="<?php echo $estilo['ID_Estilos']; ?>">
+                                            <?php echo $estilo['Nombre']; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                        </div>            
+
+
                         <div class="form-group">
                             <label for="Nombre">Duracion</label>
                             <input type="time" class="form-control" id="Nombre" name="Duracion" placeholder=""

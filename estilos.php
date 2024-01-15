@@ -183,7 +183,7 @@ require_once('./php_librarys/bd.php');
                             <div class="form-group">
 
                                 <?php $estilos = ListarEstilo(); ?>
-                                <label for="ID_Estilos">Artista</label>
+                                <label for="ID_Estilos">Estilo</label>
                                 <select class="form-select" name="ID_Estilos">
                                     <?php foreach ($estilos as $estilo): ?>
                                         <option value="<?php echo $estilo['ID_Estilos']; ?>">

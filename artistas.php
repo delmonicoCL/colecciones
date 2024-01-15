@@ -145,7 +145,6 @@ require_once('./php_librarys/bd.php');
                     <tr>
                         <th>ID_Artista</th>
                         <th>Nombre</th>
-
                     </tr>
                 </thead>
                 <tbody>

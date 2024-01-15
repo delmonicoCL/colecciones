@@ -17,8 +17,8 @@ if (isset($_POST['insert'])) {
         exit();
     }
 } elseif (isset($_POST['delete'])) {
-    printf("Aqui2");
-    borrarArtista($_POST['ID_Artista']);
+    
+    borrarEstilo($_POST['ID_Estilos']);
     header('Location: ../estilos.php');
     exit();
 

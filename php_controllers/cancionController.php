@@ -7,7 +7,11 @@ require_once('../php_librarys/bd.php');
 
 if (isset($_POST['insert'])) {
 
-    insertCancion($_POST['ID_Albums'], $_POST['Nombre'], $_POST['Duracion']);
+    //insertCancion($_POST['Id_Albums'], $_POST['Nombre'], $_POST['Duracion']);
+    //insertEstiloCanciones($_POST['Id_Canciones'], $_POST['Id_Estilos']);
+
+
+    insertCancionConEstilo($_POST['ID_Albums'], $_POST['Nombre'], $_POST['Duracion'], $_POST['ID_Estilos']);
 
     if (isset($_SESSION['error'])) {
         header('Location: ../canciones.php');
@@ -18,7 +22,7 @@ if (isset($_POST['insert'])) {
     }
 } elseif (isset($_POST['delete'])) {
     printf("Aqui2");
-    borrarAlbum($_POST['ID_Canciones']);
+    borrarCancion($_POST['ID_Canciones']);
     header('Location: ../canciones.php');
     exit();
 } elseif (isset($_POST['update'])) {

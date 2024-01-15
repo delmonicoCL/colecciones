@@ -218,14 +218,14 @@ require_once('./php_librarys/bd.php');
                                 </ul>
 
 
-                                <div class="card-body">
-                                    <button type="button" class="btn btn-warning" data-bs-toggle="collapse"
+                                <div class="card-body  d-flex justify-content-center">
+                                    <button type="button" class="btn btn-warning me-2" data-bs-toggle="collapse"
                                         data-bs-target="#collapseExample" aria-expanded="false"
                                         aria-controls="collapseExample"> Abrir </button>
                                     <button type="button" class="btn btn-success  me-2" data-bs-toggle="modal"
                                         data-bs-target="#ModalActualizar"> ACTUALIZAR </button>
-                                    <button type="button" class="btn btn-danger"
-                                        onclick="eliminarAlbum(<?php echo $album['ID_Albums']; ?>)">Borrar</button>
+                                    <button type="button" class="btn btn-danger me-2" data-bs-toggle="modal"
+                                        data-bs-target="#ModalEliminar">Borrar</button>
 
                                 </div>
                             </div>
@@ -240,28 +240,7 @@ require_once('./php_librarys/bd.php');
             </div>
         </div>
 
-        <script>
-        function eliminarAlbum(albumID) {
-            if (confirm('¿Estás seguro de que deseas eliminar este álbum?')) {
-                // Enviar solicitud de eliminación a albumController.php
-                // window.location.href = './php_controllers/albumController.php?delete=' + albumID;
-
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', './php_controllers/albumController.php', true);
-                
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === 4) {
-                        if (xhr.status === 200) {
-                            console.log('Respuesta del servidor:', xhr.responseText);
-                        } else {
-                            console.error('Error al enviar la solicitud POST');
-                        }
-                    }
-                };
-                xhr.send('delete=' + albumID);
-            }
-        }
-        </script>
+       
 
         <!-- Modal Eliminar -->
 
@@ -316,16 +295,16 @@ require_once('./php_librarys/bd.php');
                     <div class="modal-body">
                         <form action="./php_controllers/albumController.php" method="POST">
 
-                            <div class="form-group">
-                                <label for="ID_Albums">ID_Albums</label>
-                                <input type="number" class="form-control" id="ID_Albums" name="ID_Albums"
-                                    placeholder="Identificador" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="ID_Artista">ID_Artista</label>
-                                <input type="number" class="form-control" id="ID_Artista" name="ID_Artista"
-                                    placeholder="Identificador" required>
-                            </div>
+                        <div class="form-group">
+                                                         
+                                                         <?php $artistas = ListarArtista(); ?>                         
+                                                         <label for="ID_Artista">Artista</label>
+                                                         <select class="form-select" name="ID_Artista">
+                                                         <?php foreach ($artistas as $artista): ?>
+                                                         <option value="<?php echo $artista['ID_Artista']; ?>"><?php echo $artista['Nombre']; ?></option>
+                                                         <?php endforeach; ?>
+                                                         </select>
+                                                        </div>
                             <div class="form-group">
                                 <label for="Nombre">Nombre Disco</label>
                                 <input type="text" class="form-control" id="Nombre" name="Nombre"
