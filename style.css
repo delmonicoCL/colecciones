@@ -30,3 +30,18 @@ box-shadow:  17px 17px 10px #e3e1e1,
 }
 
 
+.listados{
+width: 1200px;
+
+
+
+}
+
+
+.imagenHeader {
+       background-image: url(./assets/img/cassettes.jpg);
+       background-size: cover;
+
+       
+    }
+

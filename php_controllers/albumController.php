@@ -7,7 +7,7 @@ require_once('../php_librarys/bd.php');
 
 if (isset($_POST['insert'])) {
 
-    insertAlbum( $_POST['ID_Artista'], $_POST['Nombre'], $_FILES['Imagen'], $_POST['Descripcion']);
+    insertAlbum( $_POST['ID_Artista'], $_POST['Nombre'], $_POST['Imagen'], $_POST['Descripcion']);
 
     if (isset($_SESSION['error'])) {
         header('Location: ../index.php');
@@ -16,12 +16,10 @@ if (isset($_POST['insert'])) {
         header('Location: ../index.php');
         exit();
     }
-
-  
-
 } 
 
 elseif (isset($_POST['delete'])) {
+    printf("Aqui2");
     borrarAlbum($_POST['ID_Albums']);
     header('Location: ../index.php');
     exit();

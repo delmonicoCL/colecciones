@@ -25,33 +25,9 @@ require_once('./php_librarys/bd.php');
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
     </script>
-    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="style.css">
 
-    <!-- <style>
-    .carta-box:hover .carta {
-        transform: rotateY(180deg);
-    }
-
-    .carta {
-        transform-style: preserve-3d;
-        transition: all 0.5s linear;
-    }
-
-    .cara {
-        position: relative;
-        backface-visibility: hidden;
-        width: 100%;
-        height: 100%;
-        display: flex;
-
-    }
-
-    .detras {
-        transform: rotateY(180deg);
-    }
-    </style> -->
-
-</head>
+  </head>
 
 <body>
 
@@ -99,20 +75,18 @@ require_once('./php_librarys/bd.php');
 
     <main>
 
-        <section class="py-5 text-center container mt-4"
-            style="background-image: url('https://static1.makeuseofimages.com/wordpress/wp-content/uploads/2013/09/cassettes.jpg?q=50&fit=contain&w=1140&h=&dpr=1.5'); background-size: cover; background-position: center;">
-            <div class="row py-lg-5">
-                <div class="col-lg-6 col-md-8 mx-auto">
-                    <h1 class="fw-light">Álbumes</h1>
-                    <p class="lead">Bienvenido a Colecciones, la plataforma para explorar y
-                        descubrir los mejores álbumes de música de todos los tiempos. Descubre joyas atemporales que han
-                        dejado una marca en la historia.</p>
-                    <p>
-                        <a href="#" class="btn btn-primary btn-lg my-2">ÁLBUMES</a>
-                        <a href="#" class="btn btn-secondary btn-lg my-2">ARTISTAS</a>
-                        <a href="#" class="btn btn-success btn-lg my-2">CANCIONES</a>
-                        <a href="#" class="btn btn-warning btn-lg my-2">ESTILOS</a>
-                    </p>
+        <section class="imagenHeader ">
+            <div class="row py-lg-5 ">
+                <div class="col-lg-6 col-md-8 mx-auto ">
+                    <h1 class="fw-light d-flex justify-content-center">Álbumes</h1>
+                   <p class="lead d-flex justify-content-center">Bienvenido a Colecciones, la plataforma para explorar y descubrir los mejores álbumes de música de todos los tiempos. Descubre joyas atemporales que han dejado una marca en la historia.</p>
+                <p class="d-flex justify-content-center">
+                    <a href="index.php" class="btn btn-primary btn-lg mr-4">ÁLBUMES</a>
+                    <a href="artistas.php" class="btn btn-secondary btn-lg mr-4">ARTISTAS</a>
+                     <a href="canciones.php" class="btn btn-success btn-lg mr-4">CANCIONES</a>
+                    <a href="estilos.php" class="btn btn-warning btn-lg mr-4">ESTILOS</a>
+                </p>
+
                 </div>
             </div>
         </section>
@@ -169,7 +143,7 @@ require_once('./php_librarys/bd.php');
                         <div class="carta">
 
                             <div class="frente card card-container cardEstilo">
-                                <img src="<?php echo $album['Imagen']; ?>" class="card-img-top" alt="...">
+                                <img src="<?php echo $album['Imagen']; ?>" class="card-img-top" alt="..."> 
                                 <div class="card-body">
                                     <h5 class="card-title">
                                         <?php echo $album['Nombre']; ?>
@@ -270,7 +244,21 @@ require_once('./php_librarys/bd.php');
         function eliminarAlbum(albumID) {
             if (confirm('¿Estás seguro de que deseas eliminar este álbum?')) {
                 // Enviar solicitud de eliminación a albumController.php
-                window.location.href = './php_controllers/albumController.php?delete=' + albumID;
+                // window.location.href = './php_controllers/albumController.php?delete=' + albumID;
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', './php_controllers/albumController.php', true);
+                
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            console.log('Respuesta del servidor:', xhr.responseText);
+                        } else {
+                            console.error('Error al enviar la solicitud POST');
+                        }
+                    }
+                };
+                xhr.send('delete=' + albumID);
             }
         }
         </script>
@@ -288,11 +276,20 @@ require_once('./php_librarys/bd.php');
                     <div class="modal-body">
                         <form action="./php_controllers/albumController.php" method="POST">
 
-                            <div class="form-group mt-2">
-                                <label for="identificador">Ingresa N Identificador</label>
-                                <input type="number" class="form-control" id="ID_Albums" name="ID_Albums"
-                                    placeholder="ID_Albums">
-                            </div>
+                         <div class="form-group">
+                                                         
+                              <?php $albums = SelectAlbunes(); ?>
+                            <label for="ID_Albums">Albums</label>
+                            <select class="form-select" name="ID_Albums">
+                                <?php foreach ($albums as $album): ?>
+                                    <option value="<?php echo $album['ID_Albums']; ?>">
+                                        <?php echo $album['Nombre']; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+
                             <div class="d-flex justify-content-end mt-2">
                                 <button type="submit" class="btn btn-danger align-items-center"
                                     name="delete">Eliminar</button>
@@ -365,33 +362,18 @@ require_once('./php_librarys/bd.php');
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="./php_controllers/albumController.php" method="POST">
+                        <form action="./php_controllers/albumController.php" method="POST" enctype="multipart/form-data">
                            
                             <div class="form-group">
-                                <!-- <label for="ID_Artista">Artista</label> -->
-                                <!-- <select name="ID_Artista"> 
-                                 <option value="1">Queen</option>   
-                                 <option value="2">Red HOT</option>   
-                                 <option value="3">Paul van Dyk</option>  
-                                 <option value="4">Ramones</option>   
-                                </select>  -->
-
-                                
-                            <?php $artistas = ListarArtista(); ?>
-                           
-                            
+                                                         
+                            <?php $artistas = ListarArtista(); ?>                         
                             <label for="ID_Artista">Artista</label>
-                            <select name="ID_Artista">
+                            <select class="form-select" name="ID_Artista">
                             <?php foreach ($artistas as $artista): ?>
                             <option value="<?php echo $artista['ID_Artista']; ?>"><?php echo $artista['Nombre']; ?></option>
                             <?php endforeach; ?>
                             </select>
-
-
-
-
-
-                            </div>
+                           </div>
                             <div class="form-group">
                                 <label for="Nombre">Nombre Disco</label>
                                 <input type="text" class="form-control" id="Nombre" name="Nombre"

@@ -51,8 +51,30 @@ function ListarArtista()
 
 }
 
+function ListarEstilo()
+{
+    $conexion = openBd();
+    $sentenciaText = "SELECT ID_Estilos, Nombre, Origen FROM estilos";
+    $sentencia = $conexion->prepare($sentenciaText);
+    $sentencia->execute();
+    $resultado = $sentencia->fetchALL();
+    $conexion = closeBD();
+    return $resultado;
 
+}
 
+function ListarCanciones()
+{
+    $conexion = openBd();
+    $sentenciaText = "SELECT canciones.Nombre AS Cancion, albums.Nombre AS Album FROM colecciones.canciones
+    JOIN colecciones.albums ON canciones.ID_Albums = albums.ID_Albums";
+    $sentencia = $conexion->prepare($sentenciaText);
+    $sentencia->execute();
+    $resultado = $sentencia->fetchALL();
+    $conexion = closeBD();
+    return $resultado;
+
+}
 
 function SelectCanciones($idAlbum)
 {
@@ -87,29 +109,74 @@ function SelectCancionesEstilos($idAlbum)
 }
 
 
-function insertAlbum($ID_Artista, $Nombre, $Imagen, $Descripcion)
+function insertAlbum($ID_Artista, $Nombre, $targetFile, $Descripcion)
 {
     $conexion = openBd();
-    $ruta_archivo = "../assets/img/";
 
-    
-    $Imagen ="./img/" . $_FILES['imagen']['name'];
-    $archivo_subido = $ruta_archivo . $_FILES['imagen']['name'];
-    
-    move_uploaded_file($_FILES['imagen']['tmp_name'], $archivo_subido);
+    // Verifica si se ha enviado un archivo
+    if (isset($_FILES["Imagen"])) {
+        
+        $rutaImgBD = "./assets/img/" . basename($_FILES["Imagen"]["name"]); // Ruta donde se guardará la ruta en BD
+        $rutaImgLocal = "../assets/img/" . basename($_FILES["Imagen"]["name"]); // Ruta que mueve el documento
+        // Mueve el archivo subido a la ubicación deseada
+        if (move_uploaded_file($_FILES["Imagen"]["tmp_name"], $rutaImgLocal)) { 
+            // La imagen se ha guardado correctamente
+            // Ahora puedes guardar la URL de la imagen en tu base de datos
+            // y realizar otras operaciones necesarias
+        } else {
+            echo "Error al subir la imagen.";
+        }
+    }
 
-
-    $sentenciaText = "insert into albums (ID_Artista, Nombre, Imagen, Descripcion) values ( :ID_Artista, :Nombre, :Imagen, :Descripcion)";
+    $sentenciaText = "INSERT INTO albums (ID_Artista, Nombre, Imagen, Descripcion) VALUES (:ID_Artista, :Nombre, :Imagen, :Descripcion)";
     $sentencia = $conexion->prepare($sentenciaText);
-   
+
     $sentencia->bindParam(':ID_Artista', $ID_Artista);
     $sentencia->bindParam(':Nombre', $Nombre);
-    $sentencia->bindParam(':Imagen', $Imagen);
+    $sentencia->bindParam(':Imagen', $rutaImgBD);
     $sentencia->bindParam(':Descripcion', $Descripcion);
     $sentencia->execute();
+
+    // Cierra la conexión a la base de datos
     $conexion = closeBd();
+}
 
 
+function insertArtista($Nombre)
+{
+    $conexion = openBd();
+    $sentenciaText = "INSERT INTO artista (Nombre) VALUES (:Nombre)";
+    $sentencia = $conexion->prepare($sentenciaText);
+    $sentencia->bindParam(':Nombre', $Nombre);
+    $sentencia->execute();
+    // Cierra la conexión a la base de datos
+    $conexion = closeBd();
+}
+
+
+function insertCancion($ID_Albums, $Nombre, $Duracion)
+{
+    $conexion = openBd();
+    $sentenciaText = "INSERT INTO canciones (ID_Albums, Nombre, Duracion) VALUES (:ID_Albums, :Nombre, :Duracion)";
+    $sentencia = $conexion->prepare($sentenciaText);
+    $sentencia->bindParam(':ID_Albums', $ID_Albums);
+    $sentencia->bindParam(':Nombre', $Nombre);
+    $sentencia->bindParam(':Duracion', $Duracion);
+    $sentencia->execute();
+    // Cierra la conexión a la base de datos
+    $conexion = closeBd();
+}
+
+function insertEstilo($Nombre, $Origen)
+{
+    $conexion = openBd();
+    $sentenciaText = "INSERT INTO estilos (Nombre, Origen) VALUES (:Nombre, :Origen)";
+    $sentencia = $conexion->prepare($sentenciaText);
+    $sentencia->bindParam(':Nombre', $Nombre);
+    $sentencia->bindParam(':Duracion', $Origen);
+    $sentencia->execute();
+    // Cierra la conexión a la base de datos
+    $conexion = closeBd();
 }
 
 
@@ -119,6 +186,17 @@ function borrarAlbum($ID_Albums)
     $sentenciaText = "DELETE FROM albums WHERE ID_Albums = :ID_Albums";
     $sentencia = $conexion->prepare($sentenciaText);
     $sentencia->bindParam(':ID_Albums', $ID_Albums);
+    $sentencia->execute();
+    $conexion = closeBd();
+}
+
+
+function borrarArtista($ID_Artista)
+{
+    $conexion = openBd();
+    $sentenciaText = "DELETE FROM artista WHERE ID_Artista = :ID_Artista";
+    $sentencia = $conexion->prepare($sentenciaText);
+    $sentencia->bindParam(':ID_Artista', $ID_Artista);
     $sentencia->execute();
     $conexion = closeBd();
 }
@@ -139,5 +217,22 @@ function actualizarAlbum($ID_Albums, $ID_Artista, $Nombre, $Imagen, $Descripcion
     $conexion = closeBd();
 }
 
+function actualizarArtista($ID_Artista, $Nombre)
+{
+    $conexion = openBd();
+    $sentenciaText = "UPDATE artista SET Nombre = :Nombre WHERE ID_Artista = :ID_Artista";
+    $sentencia = $conexion->prepare($sentenciaText);
+    $sentencia->bindParam(':Nombre', $Nombre);
+    $sentencia->bindParam(':ID_Artista', $ID_Artista);
+    $sentencia->execute();
+    $conexion = closeBd();
+}
+
+
+// ... más funciones y código ...
 ?>
+
+
+
+
 
