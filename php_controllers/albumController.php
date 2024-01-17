@@ -19,14 +19,19 @@ if (isset($_POST['insert'])) {
 } 
 
 elseif (isset($_POST['delete'])) {
-    printf("Aqui2");
-    borrarAlbum($_POST['ID_Albums']);
+    $ID_Albums = $_POST['ID_Albums'];
+    borrarAlbum($ID_Albums);
     header('Location: ../index.php');
     exit();
 }
 
+
+
+
+
+
 elseif (isset($_POST['update'])) {
-    actualizarAlbum($_POST['ID_Albums'], $_POST['ID_Artista'], $_POST['Nombre'], $_POST['Imagen'], $_POST['Descripcion']);
+    actualizarAlbum($_POST['ID_Artista'], $_POST['Nombre'], $_POST['Imagen'], $_POST['Descripcion']);
     header('Location: ../index.php');
     exit();
 }

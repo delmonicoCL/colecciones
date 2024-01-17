@@ -79,7 +79,7 @@ require_once('./php_librarys/bd.php');
             <div class="row py-lg-5 ">
                 <div class="col-lg-6 col-md-8 mx-auto ">
                     <h1 class="fw-light d-flex justify-content-center">ESTILOS</h1>
-                    <p class="lead d-flex justify-content-center">Bienvenido a Colecciones, la plataforma para explorar
+                    <p class="lead text-center d-flex justify-content-center">Bienvenido a Colecciones, la plataforma para explorar
                         y descubrir los mejores álbumes de música de todos los tiempos. Descubre joyas atemporales que
                         han dejado una marca en la historia.</p>
                     <p class="d-flex justify-content-center">

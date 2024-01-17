@@ -45,3 +45,11 @@ width: 1200px;
        
     }
 
+    .card-img-top {
+        max-height: 300px;
+        min-height: 300px;
+        object-fit: cover;
+      } 
+
+
+ 

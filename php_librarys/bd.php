@@ -315,21 +315,34 @@ function borrarCancion($ID_Canciones)
     $conexion = closeBd();
 }
 
-
-
-function actualizarAlbum($ID_Albums, $ID_Artista, $Nombre, $Imagen, $Descripcion)
+function actualizarAlbum($ID_Artista, $Nombre, $Imagen, $Descripcion)
 {
     $conexion = openBd();
+
+    // Verifica si se ha enviado un archivo
+    if (isset($_FILES["Imagen"])) {
+        $rutaImgBD = "./assets/img/" . basename($_FILES["Imagen"]["name"]);
+        $rutaImgLocal = "../assets/img/" . basename($_FILES["Imagen"]["name"]);
+
+        if (move_uploaded_file($_FILES["Imagen"]["tmp_name"], $rutaImgLocal)) {
+            // La imagen se ha guardado correctamente
+        } else {
+            echo "Error al subir la imagen.";
+        }
+    }
+
+    // La condición WHERE depende de tu estructura de base de datos y cómo identificas el registro que deseas actualizar.
     $sentenciaText = "UPDATE albums SET ID_Artista = :ID_Artista, Nombre = :Nombre, Imagen = :Imagen, Descripcion = :Descripcion WHERE ID_Albums = :ID_Albums";
     $sentencia = $conexion->prepare($sentenciaText);
-    $sentencia->bindParam(':ID_Albums', $ID_Albums);
+    
     $sentencia->bindParam(':ID_Artista', $ID_Artista);
     $sentencia->bindParam(':Nombre', $Nombre);
-    $sentencia->bindParam(':Imagen', $Imagen);
+    $sentencia->bindParam(':Imagen', $rutaImgBD);
     $sentencia->bindParam(':Descripcion', $Descripcion);
-
+    $sentencia->bindParam(':ID_Albums', $ID_Albums);  // Agregamos el parámetro para la condición WHERE
+    
     $sentencia->execute();
-
+    // Cierra la conexión a la base de datos
     $conexion = closeBd();
 }
 
@@ -345,7 +358,7 @@ function actualizarArtista($ID_Artista, $Nombre)
 }
 
 
-// ... más funciones y código ...
+
 ?>
 
 
