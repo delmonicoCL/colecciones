@@ -20,8 +20,17 @@ if (isset($_POST['insert'])) {
 
 elseif (isset($_POST['delete'])) {
     $ID_Albums = $_POST['ID_Albums'];
-    borrarAlbum($ID_Albums);
-    header('Location: ../index.php');
+    $ID_Albums = $_POST['ID_Albums'];
+
+    // Mostrar un cuadro de confirmación en JavaScript
+    echo '<script>
+            var confirmacion = confirm("¿Estás seguro que quieres eliminar?");
+            if (confirmacion) {
+                window.location.href = "../deletePrueba.php?ID_Albums=' . $ID_Albums . '";
+            } else {
+                window.location.href = "../index.php";
+            }
+          </script>';
     exit();
 }
 

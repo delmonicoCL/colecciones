@@ -106,7 +106,7 @@ require_once('./php_librarys/bd.php');
                             AGREGAR
                         </button>
                         <button type="button" class="btn btn-success  me-2" data-bs-toggle="modal"
-                            data-bs-target="#ModalActualizar"> ACTUALIZAR
+                            data-bs-target="#ModalActualizarPrueba"> ACTUALIZAR
                         </button>
                         <button type="button" class="btn btn-danger  me-2" data-bs-toggle="modal"
                             data-bs-target="#ModalEliminar">
@@ -288,7 +288,7 @@ require_once('./php_librarys/bd.php');
         </div>
 
         <!-- Modal Actualizar -->
-        <div class="modal fade" id="ModalActualizar" tabindex="-1" aria-labelledby="ModalActualizar" aria-hidden="true">
+        <!-- <div class="modal fade" id="ModalActualizar" tabindex="-1" aria-labelledby="ModalActualizar" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -344,11 +344,45 @@ require_once('./php_librarys/bd.php');
                     </div>
                 </div>
             </div>
+        </div> -->
+
+<!-<!-- ModalActualizarPrueba -->
+<div class="modal fade" id="ModalActualizarPrueba" tabindex="-1" aria-labelledby="ModalActualizarPrueba" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalActualizarPrueba">Actualizar Álbum PRUEBA</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="./php_controllers/albumController.php" method="POST">
+                    <div class="form-group">
+                        <?php $albums = SelectAlbunes(); ?>
+                        <label for="ID_Artista">Álbumes</label>
+                        <select class="form-select" name="ID_Albums">
+                            <?php foreach ($albums as $album): ?>
+                                <option value="<?php echo $album['ID_Albums']; ?>" data-album-id="<?php echo $album['ID_Albums']; ?>">
+                                    <?php echo $album['Nombre']; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-success my-4 me-2" data-bs-toggle="modal"
+                            data-bs-target="#albumModal" data-bs-album-id="<?php echo $album['ID_Albums']; ?>" name="update">
+                        ACTUALIZAR
+                    </button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
         </div>
+    </div>
+</div>
 
 
       <!-- Modal correspondiente a cada álbum -->
-      <div class="modal fade" id="ModalActualizar1<?php echo $album['ID_Albums']; ?>" tabindex="-1" aria-labelledby="ModalActualizarLabel_<?php echo $album['ID_Albums']; ?>" aria-hidden="true">
+      <!-- <div class="modal fade" id="ModalActualizar1<?php echo $album['ID_Albums']; ?>" tabindex="-1" aria-labelledby="ModalActualizarLabel_<?php echo $album['ID_Albums']; ?>" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -387,7 +421,81 @@ require_once('./php_librarys/bd.php');
                 </div>
  
         </div>
+    </div> -->
+
+<!-- albumModal -->
+<div class="modal fade" id="albumModal" tabindex="-1" aria-labelledby="albumModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="albumModalLabel">Detalles del Álbum</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <?php
+                    $selectedAlbumId = isset($_POST['ID_Albums']) ? $_POST['ID_Albums'] : null;
+                    echo '<script>';
+                    echo 'console.log("Valor de selectedAlbumId: ' . $selectedAlbumId . '");';
+                    echo '</script>';
+                    foreach ($albums as $album):
+                         if ($album['ID_Albums'] == $selectedAlbumId):
+                    ?>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <!-- Información del Álbum -->
+                                    <h4>ALBUM <?php echo $album['Nombre']; ?></h4>
+                                    <img src="<?php echo $album['Imagen']; ?>" class="img-fluid" alt="Imagen del álbum">
+                                </div>
+                                <div class="col-md-6">
+                                    <!-- Formulario de Detalles del Álbum -->
+                                    <form action="./php_controllers/albumController.php" method="post">
+                                        <input type="hidden" name="ID_Albums" value="<?php echo $album['ID_Albums'];?>">
+                                        
+                                        <!-- Agrega los campos del formulario según tus necesidades -->
+                                        <div class="mb-3">
+                                            <label for="nombreAlbum" class="form-label">Nombre del Álbum</label>
+                                            <input type="text" class="form-control" id="nombreAlbum" name="nombreAlbum" value="<?php echo $album['Nombre']; ?>" >
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="nombreAlbum" class="form-label">Artista del Álbum</label>
+                                            <input type="text" class="form-control" id="nombreAlbum" name="ID_Artista" value="<?php echo $album['ID_Artista']; ?>" >
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="descripcionAlbum" class="form-label">IMAGEN</label>
+                                            <input type="file" class="form-control" id="descripcionAlbum" name="descripcionAlbum" rows="3" ><?php echo $album['Imagen']; ?>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="descripcionAlbum" class="form-label">Descripción del Álbum</label>
+                                            <textarea class="form-control" id="descripcionAlbum" name="descripcionAlbum" rows="3" ><?php echo $album['Descripcion']; ?></textarea>
+                                        </div>
+
+                                        <!-- Agrega más campos según sea necesario -->
+
+                                        <button type="submit" class="btn btn-danger" name="delete">
+                                            <i class="fa-solid fa-trash" style="color: #ff0000;"></i> BORRAR ÁLBUM
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            <hr> <!-- Línea separadora entre álbumes -->
+                    <?php
+                        endif;
+                    endforeach;
+                    ?>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
     </div>
+</div>
+
+
+
                                                           
 
 
