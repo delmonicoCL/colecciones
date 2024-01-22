@@ -38,6 +38,23 @@ function SelectAlbunes()
 
 }
 
+function SelectAlbum($idAlbum)
+{
+    $conexion = openBd();
+      $sentenciaText = "SELECT albums.*, artista.Nombre FROM colecciones.albums
+    join artista
+    On albums.ID_Artista=artista.ID_Artista
+    where albums.ID_Albums = " . $idAlbum;
+    $sentencia = $conexion->prepare($sentenciaText);
+    $sentencia->execute();
+    $resultado = $sentencia->fetchALL();
+
+    $conexion = closeBD();
+    return $resultado;
+
+}
+
+
 
 function ListarArtista()
 {
@@ -356,12 +373,6 @@ function actualizarArtista($ID_Artista, $Nombre)
     $sentencia->execute();
     $conexion = closeBd();
 }
-
-
-
-?>
-
-
 
 
 

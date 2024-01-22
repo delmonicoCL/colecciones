@@ -96,7 +96,7 @@ require_once('./php_librarys/bd.php');
         <div id="menuAjustes">
             <div class="collapse" id="navbarToggleExternalContent">
                 <div class="bg-dark p-4 py-3 mt-4">
-                    <h2 class="text-white d-flex justify-content-center">Opciones Albunes</h2>
+                    <h2 class="text-white d-flex justify-content-center">Opciones Albums</h2>
 
                     <div id="BarraAcciones" class="mt-2 d-flex justify-content-center py-3 bg-dark"
                         style="display: none;">
@@ -374,6 +374,9 @@ require_once('./php_librarys/bd.php');
                 </form>
             </div>
             <div class="modal-footer">
+                 <!--script>
+                    console.log($data-album-id);
+                    </!--script--->
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
@@ -392,8 +395,8 @@ require_once('./php_librarys/bd.php');
                             <div class="modal-body">
                                 <!-- Contenido del formulario de actualización -->
 
-                                <form action="./php_controllers/albumController.php" method="POST">
-                                    <!-- Contenido del formulario -->
+                                <!-- <form action="./php_controllers/albumController.php" method="POST">
+                                   
 
                                     <div class="form-group">
                                         <?php $albums = SelectAlbunes(); ?>
@@ -405,23 +408,22 @@ require_once('./php_librarys/bd.php');
                                         </select>
                                     </div>
 
-                                    <!-- Otros campos del formulario -->
 
                                     <div class="d-flex justify-content-end mt-2">
                                         <button type="submit" class="btn btn-primary" name="update">Actualizar</button>
                                     </div>
-                                </form>
+                                </form> -->
 
                             </div>
-                            <div class="modal-footer">
+                            <!-- <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
  
         </div>
-    </div> -->
+    </div>
 
 <!-- albumModal -->
 <div class="modal fade" id="albumModal" tabindex="-1" aria-labelledby="albumModalLabel" aria-hidden="true">
@@ -439,7 +441,7 @@ require_once('./php_librarys/bd.php');
                     echo 'console.log("Valor de selectedAlbumId: ' . $selectedAlbumId . '");';
                     echo '</script>';
                     foreach ($albums as $album):
-                         if ($album['ID_Albums'] == $selectedAlbumId):
+                        //  if ($album['ID_Albums'] == $selectedAlbumId):
                     ?>
                             <div class="row">
                                 <div class="col-md-6">
@@ -482,7 +484,7 @@ require_once('./php_librarys/bd.php');
                             </div>
                             <hr> <!-- Línea separadora entre álbumes -->
                     <?php
-                        endif;
+                        // endif;
                     endforeach;
                     ?>
                 </div>
@@ -493,10 +495,6 @@ require_once('./php_librarys/bd.php');
         </div>
     </div>
 </div>
-
-
-
-                                                          
 
 
 
